@@ -1,31 +1,21 @@
-# Node modules
+# dependencies
 node_modules/
 
-# Environment variables
+# environment variables
 .env
 
-# Logs
+# logs
+logs
 *.log
 npm-debug.log*
 
-# Runtime files
-*.pid
-*.seed
-*.pid.lock
-
-# Upload folder
-uploads/
-
-# Build folders
+# build folders
 dist/
 build/
-
-# Coverage
-coverage/
-
-# VS Code settings
-.vscode/
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# editor settings
+.vscode/
