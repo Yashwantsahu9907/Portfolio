@@ -5,6 +5,8 @@ import path from 'path';
 import connectDB from './config/db.js';
 import { fileURLToPath, fileURlToPath } from 'url';
 
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import experienceRoutes from './routes/experienceRoutes.js';
