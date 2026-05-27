@@ -9,7 +9,7 @@ const uploadDir = 'uploads/';
 // check folder exist or not 
 if (!fs.existsSync(uploadDir)) {    // existsSync() method is used to check if the folder is exist or not 
     fs.mkdirSync(uploadDir, { recursive: true }); //mkdirsync() method is used to create a folder if it does not exist recursive: true option is used to create a folder if they do not exist
-      
+
 }
 
 
@@ -28,25 +28,25 @@ const storage = multer.diskStorage({  //diskStorage() means file saving in disk 
 });
 
 // File type validation 
-const checkImageFileType = (file, cb ) => {
+const checkImageFileType = (file, cb) => {
     const filetypes = /jpg|jpeg|png|webp|gif/;  //allowed file types
-// extension check
-const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    // extension check
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 
-const mimetype = filetypes.test(file.mimetype); 
-if (extname && mimetype) {
+    const mimetype = filetypes.test(file.mimetype);
+    if (extname && mimetype) {
 
-    return cb(null, true);
-     
-} else {
-    cb('Images only!');
-}
+        return cb(null, true);
+
+    } else {
+        cb('Images only!');
+    }
 };
 
 
 // Check Pdf file type validation 
-const checkPdfFileType = (file, cb ) => {
-    const filetypes = /pdf/;   
+const checkPdfFileType = (file, cb) => {
+    const filetypes = /pdf/;
 
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 
