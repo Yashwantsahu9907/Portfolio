@@ -12,7 +12,7 @@ const skillSchema = new mongoose.Schema(
       required: true,
       enum: [
         'Frontend Development',
-        'Backend Development',
+        'Backend Development',     // enum:- allow only that value which are mention
         'Database & Storage',
         'Tools & DevOps',
         'Other',
