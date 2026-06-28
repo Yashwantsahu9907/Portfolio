@@ -2,12 +2,26 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Globe, FolderGit2, ArrowRight } from 'lucide-react';
-import api from '../services/api';
+import api, { API_URL } from '../services/api';
 import { ProjectSkeleton } from './Skeleton';
 import SEO from './SEO';
 
 export default function Projects() {
   const [filter, setFilter] = useState('All');
+
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('/')) {
+      return `${API_URL}${url}`;
+    }
+    if (url.includes('drive.google.com/file/d/')) {
+      const match = url.match(/\/d\/(.+?)\//);
+      if (match && match[1]) {
+        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    }
+    return url;
+  };
 
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -112,7 +126,7 @@ export default function Projects() {
                 <div className="relative h-56 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent z-10 opacity-80 group-hover:opacity-60 transition-opacity"></div>
                   <img 
-                    src={project.image} 
+                    src={getImageUrl(project.image)} 
                     alt={project.title} 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
                   />

@@ -1,20 +1,78 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Trash2, Loader2, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Loader2, ExternalLink, Edit } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { API_URL } from '../../services/api';
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const { token } = useAuth();
 
   const [formData, setFormData] = useState({
     title: '', desc: '', image: '', category: 'Full Stack', tags: '', demoUrl: '', githubUrl: ''
   });
+
+  const openAddModal = () => {
+    setEditingId(null);
+    setFormData({ title: '', desc: '', image: '', category: 'Full Stack', tags: '', demoUrl: '', githubUrl: '' });
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (project) => {
+    setEditingId(project._id);
+    setFormData({
+      title: project.title,
+      desc: project.desc,
+      image: project.image,
+      category: project.category,
+      tags: Array.isArray(project.tags) ? project.tags.join(', ') : project.tags,
+      demoUrl: project.demoUrl || '',
+      githubUrl: project.githubUrl || ''
+    });
+    setIsModalOpen(true);
+  };
+
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('/')) {
+      return `${API_URL}${url}`;
+    }
+    if (url.includes('drive.google.com/file/d/')) {
+      const match = url.match(/\/d\/(.+?)\//);
+      if (match && match[1]) {
+        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    }
+    return url;
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const fileData = new FormData();
+    fileData.append('image', file);
+
+    setUploadingImage(true);
+    try {
+      const res = await api.post('/upload', fileData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setFormData(prev => ({ ...prev, image: res.data }));
+      toast.success('Image uploaded successfully');
+    } catch (error) {
+      toast.error('Failed to upload image');
+      console.error(error);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const fetchProjects = async () => {
     try {
@@ -40,12 +98,17 @@ export default function ManageProjects() {
     try {
       const payload = {
         ...formData,
-        tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
+        tags: typeof formData.tags === 'string' ? formData.tags.split(',').map(tag => tag.trim()).filter(Boolean) : formData.tags
       };
 
-      await api.post('/admin/projects', payload);
+      if (editingId) {
+        await api.put(`/admin/projects/${editingId}`, payload);
+        toast.success('Project updated successfully');
+      } else {
+        await api.post('/admin/projects', payload);
+        toast.success('Project added successfully');
+      }
       
-      toast.success('Project added successfully');
       setIsModalOpen(false);
       setFormData({ title: '', desc: '', image: '', category: 'Full Stack', tags: '', demoUrl: '', githubUrl: '' });
       fetchProjects();
@@ -76,7 +139,7 @@ export default function ManageProjects() {
           <p className="text-sm text-gray-400">Add, edit, or remove your portfolio projects.</p>
         </div>
         <button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={openAddModal}
           className="px-4 py-2 bg-primary hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
@@ -111,7 +174,7 @@ export default function ManageProjects() {
                   <tr key={project._id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <img src={project.image} alt={project.title} className="w-12 h-12 rounded-lg object-cover" />
+                        <img src={getImageUrl(project.image)} alt={project.title} className="w-12 h-12 rounded-lg object-cover" />
                         <div>
                           <div className="font-semibold text-white mb-1">{project.title}</div>
                           <div className="text-xs text-gray-500 truncate max-w-xs">{project.desc}</div>
@@ -133,12 +196,22 @@ export default function ManageProjects() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button 
-                        onClick={() => handleDelete(project._id)}
-                        className="p-2 text-gray-400 hover:text-red-400 transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex justify-end gap-2">
+                        <button 
+                          onClick={() => handleEdit(project)}
+                          className="p-2 text-gray-400 hover:text-primary transition-colors"
+                          title="Edit Project"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(project._id)}
+                          className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                          title="Delete Project"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -157,7 +230,7 @@ export default function ManageProjects() {
             className="w-full max-w-2xl bg-surface border border-white/10 rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
           >
             <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-              <h3 className="text-lg font-bold text-white">Create New Project</h3>
+              <h3 className="text-lg font-bold text-white">{editingId ? 'Edit Project' : 'Create New Project'}</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white">✕</button>
             </div>
             
@@ -174,8 +247,14 @@ export default function ManageProjects() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
-                  <input required type="text" name="image" value={formData.image} onChange={handleChange} className="w-full px-4 py-2.5 bg-background border border-white/10 rounded-lg text-white" />
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Project Image (URL or Upload)</label>
+                  <div className="flex gap-2">
+                    <input required type="text" name="image" value={formData.image} onChange={handleChange} className="flex-1 px-4 py-2.5 bg-background border border-white/10 rounded-lg text-white" placeholder="Image URL" />
+                    <label className="cursor-pointer shrink-0 flex items-center justify-center px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                      {uploadingImage ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Upload'}
+                      <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploadingImage} />
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>

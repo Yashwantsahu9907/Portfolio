@@ -58,8 +58,30 @@ const deleteProject = async (req, res) => {
     }
 };
 
+// Update project
+const updateProject = async (req, res) => {
+    const { title, desc, image, category, tags, demoUrl, githubUrl } = req.body;
+    
+    const project = await Project.findById(req.params.id);
 
-export { getProjects, getProjectById, createProject, deleteProject };
+    if (project) {
+        project.title = title || project.title;
+        project.desc = desc || project.desc;
+        project.image = image || project.image;
+        project.category = category || project.category;
+        project.tags = tags || project.tags;
+        project.demoUrl = demoUrl || project.demoUrl;
+        project.githubUrl = githubUrl || project.githubUrl;
+
+        const updatedProject = await project.save();
+        res.json(updatedProject);
+    } else {
+        res.status(404);
+        throw new Error('Project not found');
+    }
+};
+
+export { getProjects, getProjectById, createProject, deleteProject, updateProject };
 
 
 
