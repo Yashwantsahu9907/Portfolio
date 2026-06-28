@@ -31,7 +31,7 @@ function App() {
   return (
     <HelmetProvider>
     <AuthProvider>
-      <div className="min-h-screen flex flex-col relative overflow-hidden text-foreground">
+      <div className="min-h-screen flex flex-col relative overflow-x-hidden text-foreground w-full max-w-[100vw]">
         <Toaster position="top-right" toastOptions={{
           style: {
             background: '#171717',

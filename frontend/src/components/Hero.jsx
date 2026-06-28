@@ -40,7 +40,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-24 px-6 relative overflow-hidden">
+    <section id="home" className="min-h-screen flex items-center w-full pt-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-8">
 
@@ -59,7 +59,7 @@ export default function Hero() {
               <span className="text-sm font-medium text-gray-300">Available for new opportunities</span>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 text-white">
+            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 text-white">
               Hi, I'm <br className="hidden md:block" />
               <span className="text-gradient-primary">
                 Yashwant Sahu
@@ -146,7 +146,7 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96">
               {/* Decorative Frame */}
               <div className="absolute inset-0 rounded-2xl border border-white/10 rotate-3 transition-transform duration-500 hover:rotate-6 pointer-events-none"></div>
               <div className="absolute inset-0 rounded-2xl border border-primary/30 -rotate-3 transition-transform duration-500 hover:-rotate-6 pointer-events-none"></div>
@@ -177,7 +177,7 @@ export default function Hero() {
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 z-20 w-16 h-16 bg-surface border border-white/10 rounded-xl flex items-center justify-center shadow-2xl backdrop-blur-md"
+                className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 z-20 w-12 h-12 sm:w-16 sm:h-16 bg-surface border border-white/10 rounded-xl flex items-center justify-center shadow-2xl backdrop-blur-md"
               >
                 <div className="text-2xl font-bold text-primary">JS</div>
               </motion.div>
@@ -185,10 +185,10 @@ export default function Hero() {
               <motion.div
                 animate={{ y: [10, -10, 10] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-8 -left-8 z-20 w-20 h-20 bg-surface border border-white/10 rounded-xl flex items-center justify-center shadow-2xl backdrop-blur-md"
+                className="absolute -bottom-4 -left-4 sm:-bottom-8 sm:-left-8 z-20 w-14 h-14 sm:w-20 sm:h-20 bg-surface border border-white/10 rounded-xl flex items-center justify-center shadow-2xl backdrop-blur-md"
               >
                 <div className="text-2xl font-bold text-secondary">
-                  <svg viewBox="0 0 24 24" className="w-10 h-10 fill-current" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-10 sm:h-10 fill-current" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z" />
                   </svg>
                 </div>
