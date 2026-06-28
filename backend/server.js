@@ -15,6 +15,7 @@ import skillRoutes from './routes/skillRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import educationRoutes from './routes/educationRoutes.js';
 
 
 
@@ -45,6 +46,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/education', educationRoutes);
 
 // Connect with admin URL
 app.use('/api/admin/projects', projectRoutes);

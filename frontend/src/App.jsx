@@ -23,6 +23,7 @@ const ManageMessages = lazy(() => import('./pages/admin/ManageMessages'));
 const ManageResume = lazy(() => import('./pages/admin/ManageResume'));
 const ManageSkills = lazy(() => import('./pages/admin/ManageSkills'));
 const ManageExperience = lazy(() => import('./pages/admin/ManageExperience'));
+const ManageEducation = lazy(() => import('./pages/admin/ManageEducation'));
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,7 @@ function App() {
             <Route path="resume" element={<ManageResume />} />
             <Route path="skills" element={<ManageSkills />} />
             <Route path="experience" element={<ManageExperience />} />
+            <Route path="education" element={<ManageEducation />} />
           </Route>
 
           {/* Public Routes */}

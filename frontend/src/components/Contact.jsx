@@ -103,7 +103,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-gray-400 mb-1">Location</h4>
-                    <p className="text-lg font-semibold text-white">San Francisco, CA</p>
+                    <p className="text-lg font-semibold text-white">Bilaspur, Chhattisgarh, India</p>
                   </div>
                 </div>
 
@@ -113,7 +113,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-gray-400 mb-1">Phone</h4>
-                    <a href="tel:+15551234567" className="text-lg font-semibold text-white hover:text-green-400 transition-colors">+1 (555) 123-4567</a>
+                    <a href="tel:+15551234567" className="text-lg font-semibold text-white hover:text-green-400 transition-colors">+91 - 9907428462</a>
                   </div>
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-5 py-3.5 bg-background/50 border border-white/10 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 text-white placeholder-gray-500"
-                      placeholder="John Doe"
+                      placeholder="Please Enter your name"
                       disabled={status === 'submitting'}
                     />
                   </div>
@@ -198,7 +198,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-5 py-3.5 bg-background/50 border border-white/10 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 text-white placeholder-gray-500"
-                      placeholder="john@example.com"
+                      placeholder="Enter your email"
                       disabled={status === 'submitting'}
                     />
                   </div>
@@ -229,7 +229,7 @@ export default function Contact() {
                     required
                     rows="5"
                     className="w-full px-5 py-3.5 bg-background/50 border border-white/10 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 text-white placeholder-gray-500 resize-none"
-                    placeholder="Tell me about your project or inquiry..."
+                    placeholder="Message Description"
                     disabled={status === 'submitting'}
                   ></textarea>
                 </div>

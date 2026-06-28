@@ -1,7 +1,7 @@
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, FolderKanban, MessageSquare, LogOut, Loader2, Code2, Menu, X, FileText, Wrench, Briefcase } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, MessageSquare, LogOut, Loader2, Code2, Menu, X, FileText, Wrench, Briefcase, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 
@@ -32,6 +32,7 @@ export default function AdminLayout() {
     { name: 'Projects', path: '/admin/projects', icon: <FolderKanban className="w-5 h-5" /> },
     { name: 'Skills', path: '/admin/skills', icon: <Wrench className="w-5 h-5" /> },
     { name: 'Experience', path: '/admin/experience', icon: <Briefcase className="w-5 h-5" /> },
+    { name: 'Education', path: '/admin/education', icon: <GraduationCap className="w-5 h-5" /> },
     { name: 'Messages', path: '/admin/messages', icon: <MessageSquare className="w-5 h-5" /> },
     { name: 'Resume', path: '/admin/resume', icon: <FileText className="w-5 h-5" /> },
   ];

@@ -5,15 +5,17 @@ import api from '../services/api';
 
 export default function About() {
   const [experiences, setExperiences] = useState([]);
+  const [education, setEducation] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [resumeUrl, setResumeUrl] = useState('#');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resResume, resExp] = await Promise.all([
+        const [resResume, resExp, resEdu] = await Promise.all([
           api.get('/resume'),
-          api.get('/experience')
+          api.get('/experience'),
+          api.get('/education')
         ]);
         
         if (resResume.data && resResume.data.url) {
@@ -21,6 +23,7 @@ export default function About() {
         }
         
         setExperiences(resExp.data);
+        setEducation(resEdu.data);
       } catch (error) {
         console.error('Error fetching data', error);
       } finally {
@@ -29,16 +32,6 @@ export default function About() {
     };
     fetchData();
   }, []);
-
-  const education = [
-    {
-      id: 1,
-      degree: "B.Tech in Computer Science",
-      institution: "National Institute of Technology",
-      period: "2017 - 2021",
-      description: "Graduated with honors. Specialized in distributed systems and web technologies."
-    }
-  ];
 
 
 
@@ -92,11 +85,11 @@ export default function About() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-panel p-5 border-l-4 border-l-primary flex flex-col justify-center">
-                <span className="text-4xl font-bold text-white mb-1">5+</span>
+                <span className="text-4xl font-bold text-white mb-1">1+</span>
                 <span className="text-sm text-gray-400 font-medium">Years Experience</span>
               </div>
               <div className="glass-panel p-5 border-l-4 border-l-secondary flex flex-col justify-center">
-                <span className="text-4xl font-bold text-white mb-1">40+</span>
+                <span className="text-4xl font-bold text-white mb-1">10+</span>
                 <span className="text-sm text-gray-400 font-medium">Projects Completed</span>
               </div>
             </div>
@@ -175,21 +168,29 @@ export default function About() {
                 <h3 className="text-2xl font-bold text-white">Education</h3>
               </div>
               <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
-                {education.map((edu, index) => (
-                  <div key={edu.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-secondary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-panel p-6 hover:-translate-y-1 transition-transform duration-300">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
-                        <h4 className="font-bold text-lg text-white">{edu.degree}</h4>
-                        <span className="text-xs font-medium px-3 py-1 bg-white/5 text-gray-300 rounded-full border border-white/10 shrink-0">{edu.period}</span>
-                      </div>
-                      <div className="text-secondary font-medium text-sm mb-3">{edu.institution}</div>
-                      <p className="text-gray-400 text-sm leading-relaxed">{edu.description}</p>
-                    </div>
+                {isLoading ? (
+                  <div className="flex justify-center py-10">
+                    <Loader2 className="w-8 h-8 text-secondary animate-spin" />
                   </div>
-                ))}
+                ) : education.length > 0 ? (
+                  education.map((edu, index) => (
+                    <div key={edu._id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-secondary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                      <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-panel p-6 hover:-translate-y-1 transition-transform duration-300">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                          <h4 className="font-bold text-lg text-white">{edu.degree}</h4>
+                          <span className="text-xs font-medium px-3 py-1 bg-white/5 text-gray-300 rounded-full border border-white/10 shrink-0">{edu.period}</span>
+                        </div>
+                        <div className="text-secondary font-medium text-sm mb-3">{edu.institution}</div>
+                        <p className="text-gray-400 text-sm leading-relaxed">{edu.description}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-10 text-gray-500">No education records added yet.</div>
+                )}
               </div>
             </div>
 
