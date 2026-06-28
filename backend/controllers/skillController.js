@@ -11,7 +11,8 @@ const getSkills = async (req, res) => {
         res.json(skills);
     } catch (error) {
 
-        res.status(500).json({ message: 'Server error' });
+        console.error("Skill fetch error:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 

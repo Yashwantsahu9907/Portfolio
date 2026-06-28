@@ -1,12 +1,74 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, FolderKanban, MessageSquare, TrendingUp, Activity } from 'lucide-react';
+import { Users, FolderKanban, MessageSquare, TrendingUp, Activity, Loader2, AlertCircle } from 'lucide-react';
+import api from '../../services/api';
 
 export default function Dashboard() {
+  const [data, setData] = useState({
+    stats: {
+      totalProjects: 0,
+      totalMessages: 0,
+      totalSkills: 0
+    },
+    recentActivity: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get('/admin/dashboard');
+        setData(res.data);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+        setError("Failed to load dashboard data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDashboardData();
+  }, []);
+
   const stats = [
-    { label: 'Total Projects', value: '12', icon: <FolderKanban className="w-6 h-6 text-primary" />, trend: '+2 this month' },
-    { label: 'Unread Messages', value: '5', icon: <MessageSquare className="w-6 h-6 text-secondary" />, trend: '3 new today' },
-    { label: 'Profile Views', value: '1,240', icon: <Users className="w-6 h-6 text-green-400" />, trend: '+15% from last week' }
+    { label: 'Total Projects', value: data.stats.totalProjects, icon: <FolderKanban className="w-6 h-6 text-primary" />, trend: 'Active' },
+    { label: 'Total Messages', value: data.stats.totalMessages, icon: <MessageSquare className="w-6 h-6 text-secondary" />, trend: 'Inbox' },
+    { label: 'Total Skills', value: data.stats.totalSkills, icon: <Users className="w-6 h-6 text-green-400" />, trend: 'Acquired' }
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center h-[60vh] text-center space-y-4">
+        <AlertCircle className="w-12 h-12 text-red-500" />
+        <h3 className="text-xl font-bold text-white">Oops! Something went wrong</h3>
+        <p className="text-gray-400">{error}</p>
+      </div>
+    );
+  }
+
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " minutes ago";
+    return "Just now";
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -44,15 +106,19 @@ export default function Dashboard() {
         >
           <h3 className="text-lg font-bold text-white mb-6">Recent Activity</h3>
           <div className="space-y-4">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="flex items-start gap-4 pb-4 border-b border-white/5 last:border-0 last:pb-0">
-                <div className="w-2 h-2 mt-2 rounded-full bg-primary shrink-0"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-300">You updated the "Task Management SaaS" project details.</p>
-                  <p className="text-xs text-gray-500 mt-1">{i * 2} hours ago</p>
+            {data.recentActivity.length === 0 ? (
+              <p className="text-gray-400 text-sm">No recent activity found.</p>
+            ) : (
+              data.recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-start gap-4 pb-4 border-b border-white/5 last:border-0 last:pb-0">
+                  <div className="w-2 h-2 mt-2 rounded-full bg-primary shrink-0"></div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-300">{activity.text}</p>
+                    <p className="text-xs text-gray-500 mt-1">{timeAgo(activity.date)}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </motion.div>
 

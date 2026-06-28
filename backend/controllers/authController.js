@@ -7,7 +7,7 @@ import generateToken from '../utils/generateToken.js';
 // access: Public
 
 // LOGIN FUNCTION
-const authadmin = async (req, res) => {
+const authAdmin = async (req, res) => {
 
     // data comes from frontend
     const { email, password } = req.body;
@@ -66,6 +66,6 @@ const getAdminProfile = async (req, res) => {
 
 
 export {
-    authadmin,
+    authAdmin,
     getAdminProfile,
 };

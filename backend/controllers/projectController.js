@@ -1,13 +1,15 @@
 import Project from '../models/Project.js';   //import mongodb model
 
 // Get all projects
-const getProjects = async (req, res) => {   //this function fetch the project 
-
-    // Fetch the data from database
-    const projects = await Project.find({})
-        .sort({ createdAt: -1 });
-
-    res, json(projects);
+const getProjects = async (req, res) => {
+    try {
+        const projects = await Project.find({})
+            .sort({ createdAt: -1 });
+        res.json(projects);
+    } catch (error) {
+        console.error("Project fetch error:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
 };
 
 
@@ -32,8 +34,7 @@ const createProject = async (req, res) => {   // create mongodb document
     //Request body data
     const { title, desc, image, category, tags, demoUrl, githubUrl, } = req.body;   // JSON data come from frontend
 
-    // Create new project instance (object)
-    const project = new Project({ title, desc, image, category, tags, deoUrl, githubUrl, });
+    const project = new Project({ title, desc, image, category, tags, demoUrl, githubUrl, });
 
     // Save project in the database
     const createdProject = await project.save();
@@ -58,7 +59,7 @@ const deleteProject = async (req, res) => {
 };
 
 
-export { getProject, getProjectById, createProject, deleteProject };
+export { getProjects, getProjectById, createProject, deleteProject };
 
 
 

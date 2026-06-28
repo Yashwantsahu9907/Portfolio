@@ -19,10 +19,10 @@ const errorHandler = (err, req, res, next) => {
 // Route not found middleware   handle invalid route
 const notFound = (req, res, next) => {
     const error = new Error(
-        'Not Found - ${req.originalUrl}'  //req.originalUrl gives the original request url
+        `Not Found - ${req.originalUrl}`  //req.originalUrl gives the original request url
     );
 
-    res.ststus(400);
+    res.status(404);
 
     next(error);   // send the error to the next middleware for handling error
 

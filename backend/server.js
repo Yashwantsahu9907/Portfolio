@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import connectDB from './config/db.js';
-import { fileURLToPath, fileURlToPath } from 'url';
+import { fileURLToPath } from 'url';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -14,6 +14,7 @@ import projectRoutes from './routes/projectRoutes.js';
 import skillRoutes from './routes/skillRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 
 
@@ -40,14 +41,15 @@ app.use(express.json()); // for reading the json data from the frontend
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/experience', experienceRoutes);
-app.use('/api/project', projectRoutes);
-app.use('/api/skill', skillRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/skills', skillRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // Connect with admin URL
-app.use('/api/admin/project', projectRoutes);
+app.use('/api/admin/projects', projectRoutes);
 app.use('/api/admin/messages', contactRoutes);
+app.use('/api/admin/dashboard', dashboardRoutes);
 
 
 // Health check
@@ -64,7 +66,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 //Error middleware
-app.use(notfound);
+app.use(notFound);
 app.use(errorHandler);
 
 
