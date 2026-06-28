@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Upload, FileText, Loader2, Trash2, ExternalLink } from 'lucide-react';
 import toast from 'react-hot-toast';
-import api from '../../services/api';
+import api, { API_URL } from '../../services/api';
 
 export default function ManageResume() {
   const [resume, setResume] = useState(null);
@@ -145,7 +145,7 @@ export default function ManageResume() {
 
               <div className="flex gap-3">
                 <a
-                  href={`http://localhost:5000${resume.url}`}
+                  href={`${API_URL}${resume.url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 border border-white/10"

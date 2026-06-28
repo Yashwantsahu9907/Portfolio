@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Loader2, LogIn, Mail, Lock } from 'lucide-react';
+import api from '../../services/api';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 
 export default function AdminLogin() {
@@ -22,7 +22,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const { data } = await api.post('/auth/login', { email, password });
       login(data);
       toast.success('Logged in successfully');
       navigate('/admin/dashboard');

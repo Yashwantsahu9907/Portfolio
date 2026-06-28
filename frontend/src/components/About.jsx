@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Download, GraduationCap, Briefcase, Award, ArrowRight, Loader2 } from 'lucide-react';
-import api from '../services/api';
+import api, { API_URL } from '../services/api';
 
 export default function About() {
   const [experiences, setExperiences] = useState([]);
@@ -17,11 +17,11 @@ export default function About() {
           api.get('/experience'),
           api.get('/education')
         ]);
-        
+
         if (resResume.data && resResume.data.url) {
-          setResumeUrl(`http://localhost:5000${resResume.data.url}`);
+          setResumeUrl(`${API_URL}${resResume.data.url}`);
         }
-        
+
         setExperiences(resExp.data);
         setEducation(resEdu.data);
       } catch (error) {
@@ -39,7 +39,7 @@ export default function About() {
     <section id="about" className="py-24 px-6 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="text-center mb-20">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -47,7 +47,7 @@ export default function About() {
           >
             <span className="text-sm font-medium text-primary uppercase tracking-widest">Discover</span>
           </motion.div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -56,7 +56,7 @@ export default function About() {
           >
             About <span className="text-gradient-primary">Me</span>
           </motion.h2>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -67,19 +67,20 @@ export default function About() {
 
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Story & Goals Area (Left side) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="lg:col-span-5 flex flex-col justify-center space-y-8"
           >
             <div className="prose prose-invert max-w-none">
-              <h3 className="text-2xl font-bold text-white mb-4">My Journey & Vision</h3>
+              <h3 className="text-3xl font-bold text-white mb-4">My Journey & Vision</h3>
               <p className="text-lg text-gray-300 leading-relaxed">
-                My passion for software engineering started when I built my first HTML page. Since then, it has evolved into a relentless pursuit of crafting robust, scalable, and visually stunning digital solutions. 
+                My journey into web development started with a curiosity about building websites and solving real-world problems through technology. Over time, I specialized in the **MERN Stack (MongoDB, Express.js, React.js, and Node.js)**, developing full-stack web applications with modern, responsive, and user-friendly interfaces backed by secure and scalable backend systems.
               </p>
+              <p className="text-lg text-gray-300 leading-relaxed mt-4">To continuously improve my skills, I am learning **Data Structures and Algorithms (DSA)** to strengthen my problem-solving abilities and write more efficient, optimized code.</p>
               <p className="text-lg text-gray-300 leading-relaxed mt-4">
-                I thrive in the intersection of design and engineering. My goal is to build products that not only function flawlessly under heavy loads but also provide an intuitive, engaging, and premium experience for the end-user.
+                My vision is to become a skilled **Full Stack Software Engineer** who builds scalable, high-quality applications that create meaningful user experiences. I believe in continuous learning, clean code, and developing innovative solutions that make a real impact.
               </p>
             </div>
 
@@ -94,7 +95,7 @@ export default function About() {
               </div>
             </div>
 
-            <a 
+            <a
               href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -106,7 +107,7 @@ export default function About() {
           </motion.div>
 
           {/* Timeline Area (Right side) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -140,7 +141,7 @@ export default function About() {
                         </div>
                         <div className="text-primary font-medium text-sm mb-3">{exp.company} • {exp.location}</div>
                         <p className="text-gray-400 text-sm leading-relaxed mb-4">{exp.description}</p>
-                        
+
                         {exp.technologies && exp.technologies.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {exp.technologies.map((tech, i) => (
