@@ -23,7 +23,7 @@ const storage = multer.diskStorage({  //diskStorage() means file saving in disk 
 
     // File naming and configuration 
     filename(req, file, cb) {
-        cb(null, '${file.fieldname}-${Date.now()}${path.extname(file.originalname)}'); //file.fieldname is the name of the file field in the form, Date.now() is used to generate a unique file name and path.extname() is used to get the file extension from the original file name
+        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`); //file.fieldname is the name of the file field in the form, Date.now() is used to generate a unique file name and path.extname() is used to get the file extension from the original file name
     },
 });
 
@@ -51,7 +51,7 @@ const checkPdfFileType = (file, cb) => {
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 
     const mimetype = filetypes.test(file.mimetype);
-    if (rxtname && mimetype) {
+    if (extname && mimetype) {
         return cb(null, true);
 
     } else {
